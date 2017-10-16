@@ -1,0 +1,249 @@
+
+module: ietf-bgp-l3vpn
+  augment /ni:network-instances/ni:network-instance:
+    +--rw l3vpn
+       +--rw route-distinguisher
+       |  +--rw config
+       |  |  +--rw rd?   rt-types:route-distinguisher
+       |  +--ro state
+       |     +--ro rd?   rt-types:route-distinguisher
+       +--rw ipv4
+       |  +--rw unicast
+       |     +--rw route-targets
+       |     |  +--rw config
+       |     |  |  +--rw rts* [rt]
+       |     |  |  |  +--rw rt         rt-types:route-target
+       |     |  |  |  +--rw rt-type?   enumeration
+       |     |  |  +--rw route-policy?   string
+       |     |  +--ro state
+       |     |     +--ro rts* [rt]
+       |     |     |  +--ro rt         rt-types:route-target
+       |     |     |  +--ro rt-type?   enumeration
+       |     |     +--ro route-policy?   string
+       |     +--rw import-from-global
+       |     |  +--rw config
+       |     |  |  +--rw enable?             boolean
+       |     |  |  +--rw advertise-as-vpn?   boolean
+       |     |  |  +--rw route-policy?       string
+       |     |  |  +--rw bgp-valid-route?    boolean
+       |     |  |  +--rw protocol?           enumeration
+       |     |  |  +--rw instance?           string
+       |     |  +--ro state
+       |     |     +--ro enable?             boolean
+       |     |     +--ro advertise-as-vpn?   boolean
+       |     |     +--ro route-policy?       string
+       |     |     +--ro bgp-valid-route?    boolean
+       |     |     +--ro protocol?           enumeration
+       |     |     +--ro instance?           string
+       |     +--rw export-to-global
+       |     |  +--rw config
+       |     |  |  +--rw enable?   boolean
+       |     |  +--ro state
+       |     |     +--ro enable?   boolean
+       |     +--rw routing-table-limit
+       |     |  +--rw config
+       |     |  |  +--rw routing-table-limit-number?   uint32
+       |     |  |  +--rw (routing-table-limit-action)?
+       |     |  |     +--:(enable-alert-percent)
+       |     |  |     |  +--rw alert-percent-value?          uint8
+       |     |  |     +--:(enable-simple-alert)
+       |     |  |        +--rw simple-alert?                 boolean
+       |     |  +--ro state
+       |     |     +--ro routing-table-limit-number?   uint32
+       |     |     +--ro (routing-table-limit-action)?
+       |     |        +--:(enable-alert-percent)
+       |     |        |  +--ro alert-percent-value?          uint8
+       |     |        +--:(enable-simple-alert)
+       |     |           +--ro simple-alert?                 boolean
+       |     +--rw tunnel-params
+       |        +--rw config
+       |        |  +--rw tunnel-policy?   string
+       |        +--ro state
+       |           +--ro tunnel-policy?   string
+       +--rw ipv6
+          +--rw unicast
+             +--rw route-targets
+             |  +--rw config
+             |  |  +--rw rts* [rt]
+             |  |  |  +--rw rt         rt-types:route-target
+             |  |  |  +--rw rt-type?   enumeration
+             |  |  +--rw route-policy?   string
+             |  +--ro state
+             |     +--ro rts* [rt]
+             |     |  +--ro rt         rt-types:route-target
+             |     |  +--ro rt-type?   enumeration
+             |     +--ro route-policy?   string
+             +--rw import-from-global
+             |  +--rw config
+             |  |  +--rw enable?             boolean
+             |  |  +--rw advertise-as-vpn?   boolean
+             |  |  +--rw route-policy?       string
+             |  |  +--rw bgp-valid-route?    boolean
+             |  |  +--rw protocol?           enumeration
+             |  |  +--rw instance?           string
+             |  +--ro state
+             |     +--ro enable?             boolean
+             |     +--ro advertise-as-vpn?   boolean
+             |     +--ro route-policy?       string
+             |     +--ro bgp-valid-route?    boolean
+             |     +--ro protocol?           enumeration
+             |     +--ro instance?           string
+             +--rw export-to-global
+             |  +--rw config
+             |  |  +--rw enable?   boolean
+             |  +--ro state
+             |     +--ro enable?   boolean
+             +--rw routing-table-limit
+             |  +--rw config
+             |  |  +--rw routing-table-limit-number?   uint32
+             |  |  +--rw (routing-table-limit-action)?
+             |  |     +--:(enable-alert-percent)
+             |  |     |  +--rw alert-percent-value?          uint8
+             |  |     +--:(enable-simple-alert)
+             |  |        +--rw simple-alert?                 boolean
+             |  +--ro state
+             |     +--ro routing-table-limit-number?   uint32
+             |     +--ro (routing-table-limit-action)?
+             |        +--:(enable-alert-percent)
+             |        |  +--ro alert-percent-value?          uint8
+             |        +--:(enable-simple-alert)
+             |           +--ro simple-alert?                 boolean
+             +--rw tunnel-params
+                +--rw config
+                |  +--rw tunnel-policy?   string
+                +--ro state
+                   +--ro tunnel-policy?   string
+  augment /if:interfaces/if:interface:
+    +--rw forwarding-mode
+    |  +--rw config
+    |  |  +--rw forwarding-mode?   fwd-mode-type
+    |  +--ro state
+    |     +--ro forwarding-mode?   fwd-mode-type
+    +--rw mpls-label-security
+       +--rw config
+       |  +--rw rpf?   boolean
+       +--ro state
+          +--ro rpf?   boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:l3vpn-ipv4-unicast:
+    +--rw retain-route-targets
+    |  +--rw config
+    |  |  +--rw all?            empty
+    |  |  +--rw route-policy?   string
+    |  +--ro state
+    |     +--ro all?            empty
+    |     +--ro route-policy?   string
+    +--rw vpn-prefix-limit
+       +--rw config
+       |  +--rw prefix-limit-number?   uint32
+       |  +--rw (prefix-limit-action)?
+       |     +--:(enable-alert-percent)
+       |     |  +--rw alert-percent-value?   uint8
+       |     |  +--rw route-unchanged?       boolean
+       |     +--:(enable-simple-alert)
+       |        +--rw simple-alert?          boolean
+       +--ro state
+          +--ro prefix-limit-number?   uint32
+          +--ro (prefix-limit-action)?
+             +--:(enable-alert-percent)
+             |  +--ro alert-percent-value?   uint8
+             |  +--ro route-unchanged?       boolean
+             +--:(enable-simple-alert)
+                +--ro simple-alert?          boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:l3vpn-ipv6-unicast:
+    +--rw retain-route-targets
+    |  +--rw config
+    |  |  +--rw all?            empty
+    |  |  +--rw route-policy?   string
+    |  +--ro state
+    |     +--ro all?            empty
+    |     +--ro route-policy?   string
+    +--rw vpn-prefix-limit
+       +--rw config
+       |  +--rw prefix-limit-number?   uint32
+       |  +--rw (prefix-limit-action)?
+       |     +--:(enable-alert-percent)
+       |     |  +--rw alert-percent-value?   uint8
+       |     |  +--rw route-unchanged?       boolean
+       |     +--:(enable-simple-alert)
+       |        +--rw simple-alert?          boolean
+       +--ro state
+          +--ro prefix-limit-number?   uint32
+          +--ro (prefix-limit-action)?
+             +--:(enable-alert-percent)
+             |  +--ro alert-percent-value?   uint8
+             |  +--ro route-unchanged?       boolean
+             +--:(enable-simple-alert)
+                +--ro simple-alert?          boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:ipv4-unicast:
+    +--rw config
+    |  +--rw label-mode?   bgp-label-mode
+    +--ro state
+    |  +--ro label-mode?   bgp-label-mode
+    +--rw routing-table-limit
+       +--rw config
+       |  +--rw routing-table-limit-number?   uint32
+       |  +--rw (routing-table-limit-action)?
+       |     +--:(enable-alert-percent)
+       |     |  +--rw alert-percent-value?          uint8
+       |     +--:(enable-simple-alert)
+       |        +--rw simple-alert?                 boolean
+       +--ro state
+          +--ro routing-table-limit-number?   uint32
+          +--ro (routing-table-limit-action)?
+             +--:(enable-alert-percent)
+             |  +--ro alert-percent-value?          uint8
+             +--:(enable-simple-alert)
+                +--ro simple-alert?                 boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:ipv6-unicast:
+    +--rw config
+    |  +--rw label-mode?   bgp-label-mode
+    +--ro state
+    |  +--ro label-mode?   bgp-label-mode
+    +--rw routing-table-limit
+       +--rw config
+       |  +--rw routing-table-limit-number?   uint32
+       |  +--rw (routing-table-limit-action)?
+       |     +--:(enable-alert-percent)
+       |     |  +--rw alert-percent-value?          uint8
+       |     +--:(enable-simple-alert)
+       |        +--rw simple-alert?                 boolean
+       +--ro state
+          +--ro routing-table-limit-number?   uint32
+          +--ro (routing-table-limit-action)?
+             +--:(enable-alert-percent)
+             |  +--ro alert-percent-value?          uint8
+             +--:(enable-simple-alert)
+                +--ro simple-alert?                 boolean
+  augment /bgp:bgp/bgp:neighbors/bgp:neighbor:
+    +--rw nexthop-options
+       +--rw config
+       |  +--rw next-hop-self?        boolean
+       |  +--rw next-hop-unchanged?   boolean
+       +--ro state
+          +--ro next-hop-self?        boolean
+          +--ro next-hop-unchanged?   boolean
+  augment /bgp:bgp/bgp:peer-groups/bgp:peer-group:
+    +--rw nexthop-options
+       +--rw config
+       |  +--rw next-hop-self?        boolean
+       |  +--rw next-hop-unchanged?   boolean
+       +--ro state
+          +--ro next-hop-self?        boolean
+          +--ro next-hop-unchanged?   boolean
+  augment /bgp:bgp/bgp:neighbors/bgp:neighbor/bgp:afi-safis/bgp:afi-safi:
+    +--rw nexthop-options
+       +--rw config
+       |  +--rw next-hop-self?        boolean
+       |  +--rw next-hop-unchanged?   boolean
+       +--ro state
+          +--ro next-hop-self?        boolean
+          +--ro next-hop-unchanged?   boolean
+  augment /bgp:bgp/bgp:peer-groups/bgp:peer-group/bgp:afi-safis/bgp:afi-safi:
+    +--rw nexthop-options
+       +--rw config
+       |  +--rw next-hop-self?        boolean
+       |  +--rw next-hop-unchanged?   boolean
+       +--ro state
+          +--ro next-hop-self?        boolean
+          +--ro next-hop-unchanged?   boolean
+
