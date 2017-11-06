@@ -1,0 +1,99 @@
+
+module: ietf-bgp-l3vpn
+  augment /ni:network-instances/ni:network-instance/ni:ni-type:
+    +--:(l3vpn)
+       +--rw l3vpn
+          +--rw rd?        union
+          +--ro auto-rd?   rt-types:route-distinguisher
+          +--rw ipv4
+          |  +--rw unicast
+          |     +--rw vpn-targets
+          |     |  +--rw vpn-target* [route-target]
+          |     |  |  +--rw route-target         rt-types:route-target
+          |     |  |  +--rw route-target-type    rt-types:route-target-type
+          |     |  +--rw route-policy?   string
+          |     +--rw import-from-global
+          |     |  +--rw enable?             boolean
+          |     |  +--rw advertise-as-vpn?   boolean
+          |     |  +--rw route-policy?       string
+          |     |  +--rw bgp-valid-route?    boolean
+          |     |  +--rw protocol?           enumeration
+          |     |  +--rw instance?           string
+          |     +--rw export-to-global
+          |     |  +--rw enable?   boolean
+          |     +--rw routing-table-limit
+          |     |  +--rw routing-table-limit-number?   uint32
+          |     |  +--rw (routing-table-limit-action)?
+          |     |     +--:(enable-alert-percent)
+          |     |     |  +--rw alert-percent-value?          rt-types:percentage
+          |     |     +--:(enable-simple-alert)
+          |     |        +--rw simple-alert?                 boolean
+          |     +--rw tunnel-params
+          |        +--rw tunnel-policy?   string
+          +--rw ipv6
+             +--rw unicast
+                +--rw vpn-targets
+                |  +--rw vpn-target* [route-target]
+                |  |  +--rw route-target         rt-types:route-target
+                |  |  +--rw route-target-type    rt-types:route-target-type
+                |  +--rw route-policy?   string
+                +--rw import-from-global
+                |  +--rw enable?             boolean
+                |  +--rw advertise-as-vpn?   boolean
+                |  +--rw route-policy?       string
+                |  +--rw bgp-valid-route?    boolean
+                |  +--rw protocol?           enumeration
+                |  +--rw instance?           string
+                +--rw export-to-global
+                |  +--rw enable?   boolean
+                +--rw routing-table-limit
+                |  +--rw routing-table-limit-number?   uint32
+                |  +--rw (routing-table-limit-action)?
+                |     +--:(enable-alert-percent)
+                |     |  +--rw alert-percent-value?          rt-types:percentage
+                |     +--:(enable-simple-alert)
+                |        +--rw simple-alert?                 boolean
+                +--rw tunnel-params
+                   +--rw tunnel-policy?   string
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:l3vpn-ipv4-unicast:
+    +--rw retain-route-targets
+    |  +--rw all?            empty
+    |  +--rw route-policy?   string
+    +--rw vpn-prefix-limit
+       +--rw prefix-limit-number?   uint32
+       +--rw (prefix-limit-action)?
+          +--:(enable-alert-percent)
+          |  +--rw alert-percent-value?   rt-types:percentage
+          |  +--rw route-unchanged?       boolean
+          +--:(enable-simple-alert)
+             +--rw simple-alert?          boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:l3vpn-ipv6-unicast:
+    +--rw retain-route-targets
+    |  +--rw all?            empty
+    |  +--rw route-policy?   string
+    +--rw vpn-prefix-limit
+       +--rw prefix-limit-number?   uint32
+       +--rw (prefix-limit-action)?
+          +--:(enable-alert-percent)
+          |  +--rw alert-percent-value?   rt-types:percentage
+          |  +--rw route-unchanged?       boolean
+          +--:(enable-simple-alert)
+             +--rw simple-alert?          boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:ipv4-unicast:
+    +--rw label-mode?            bgp-label-mode
+    +--rw routing-table-limit
+       +--rw routing-table-limit-number?   uint32
+       +--rw (routing-table-limit-action)?
+          +--:(enable-alert-percent)
+          |  +--rw alert-percent-value?          rt-types:percentage
+          +--:(enable-simple-alert)
+             +--rw simple-alert?                 boolean
+  augment /bgp:bgp/bgp:global/bgp:afi-safis/bgp:afi-safi/bgp:ipv6-unicast:
+    +--rw label-mode?            bgp-label-mode
+    +--rw routing-table-limit
+       +--rw routing-table-limit-number?   uint32
+       +--rw (routing-table-limit-action)?
+          +--:(enable-alert-percent)
+          |  +--rw alert-percent-value?          rt-types:percentage
+          +--:(enable-simple-alert)
+             +--rw simple-alert?                 boolean

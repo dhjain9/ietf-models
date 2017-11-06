@@ -5,7 +5,7 @@
 BESS Working Group                                               D. Jain
 Internet-Draft                                                  K. Patel
 Intended status: Standards Track                            P. Brissette
-Expires: April 18, 2018                                            Cisco
+Expires: April 21, 2018                                            Cisco
                                                                    Z. Li
                                                                S. Zhuang
                                                      Huawei Technologies
@@ -16,7 +16,7 @@ Expires: April 18, 2018                                            Cisco
                                                         Juniper Networks
                                                                   B. Wen
                                                                  Comcast
-                                                        October 15, 2017
+                                                        October 18, 2017
 
 
                   Yang Data Model for BGP/MPLS L3 VPNs
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on April 18, 2018.
+   This Internet-Draft will expire on April 21, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 1]
+Jain, et al.             Expires April 21, 2018                 [Page 1]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -105,11 +105,11 @@ Table of Contents
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
    7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  19
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 2]
+Jain, et al.             Expires April 21, 2018                 [Page 2]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -165,7 +165,7 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 3]
+Jain, et al.             Expires April 21, 2018                 [Page 3]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -221,7 +221,7 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 4]
+Jain, et al.             Expires April 21, 2018                 [Page 4]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -277,7 +277,7 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 5]
+Jain, et al.             Expires April 21, 2018                 [Page 5]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -286,7 +286,7 @@ module: ietf-bgp-l3vpn
   augment /ni:network-instances/ni:network-instance/ni:ni-type:
     +--:(l3vpn)
        +--rw l3vpn
-          +--rw rd?        bgp-rd-type
+          +--rw rd?        union
           +--ro auto-rd?   rt-types:route-distinguisher
           +--rw ipv4
           |  +--rw unicast
@@ -333,7 +333,7 @@ module: ietf-bgp-l3vpn
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 6]
+Jain, et al.             Expires April 21, 2018                 [Page 6]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -372,8 +372,8 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
    This includes few specific knobs for ASBR peering methods illustrated
    in [RFC4364].  Such as route target retention on ASBRs for inter-as
-   VPN peering across ASBRs with option-B method.  Appropriate
-   containers under BGP AF.
+   VPN peering across ASBRs with option-B method.  Appropriate address-
+   family containers under BGP base model are augmented for this.
 
 3.3.5.  Yang tree
 
@@ -389,7 +389,7 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 7]
+Jain, et al.             Expires April 21, 2018                 [Page 7]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -422,7 +422,7 @@ module: ietf-bgp-l3vpn
 4.  BGP Yang Module
 
 
-<CODE BEGINS> file "ietf-bgp-l3vpn@2017-10-15.yang"
+<CODE BEGINS> file "ietf-bgp-l3vpn@2017-10-18.yang"
 
 module ietf-bgp-l3vpn {
   yang-version 1.1;
@@ -445,7 +445,7 @@ module ietf-bgp-l3vpn {
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 8]
+Jain, et al.             Expires April 21, 2018                 [Page 8]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -501,7 +501,7 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
 
-Jain, et al.             Expires April 18, 2018                 [Page 9]
+Jain, et al.             Expires April 21, 2018                 [Page 9]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
@@ -510,7 +510,7 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
     ";
 
-  revision 2017-10-15 {
+  revision 2017-10-18 {
     description
       "Removed state containers per NMDA aligntment" +
       "Changes for network instance ni-type alignment" +
@@ -531,20 +531,6 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
       "RFC XXXX: A YANG Data Model for BGP L3VPN config management";
   }
 
-  // Local typedef for RD
-  typedef bgp-rd-type {
-    type union {
-      // Either RD value as per IETF routing types or AUTO assigned value
-      type rt-types:route-distinguisher;
-      type enumeration {
-        enum auto-assigned {
-          description "Assigned by system";
-        }
-      }
-    }
-    description "BGP RD type augmentation for configured and Auto RD value";
-  }
-
   //Label mode
   typedef bgp-label-mode {
     type enumeration {
@@ -554,14 +540,6 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
       enum per-route {
         description "Allocate labels per prefix";
       }
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 10]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
       enum per-vpn {
         description "Allocate labels per VRF";
       }
@@ -573,7 +551,23 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
   grouping route-distinguisher-params {
     description "Route distinguisher value as per RFC4364";
     leaf rd {
-      type bgp-rd-type;
+      type union {
+        // Either RD value as per IETF routing types or AUTO assigned value
+        type rt-types:route-distinguisher;
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 10]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
+        type enumeration {
+          enum auto-assigned {
+            description "Assigned by system";
+          }
+        }
+      }
       description "Route distinguisher value as per RFC4364";
     }
     leaf auto-rd {
@@ -610,20 +604,20 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
   //per VPN instance table limit under BGP
   grouping  vpn-pfx-limit {
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 11]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
     description "Per VPN instance table limit under BGP";
     container vpn-prefix-limit {
       description
        "The prefix limit config sets a limit on the maximum
         number of prefixes supported in the existing VPN
         instance, preventing the PE from importing excessive
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 11]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
         VPN route prefixes.
        ";
 
@@ -666,20 +660,20 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
             type boolean;
             default "false";
             description
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 12]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
                  "Indicates that when the number of VPN route prefixes
                   exceeds number, prefixes can still join the VPN
                   routing table and alarms are displayed.";
           }
         }
       }
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 12]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
     }
   }
 
@@ -722,20 +716,20 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
             value "2";
             description "OSPF:";
           }
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 13]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
           enum ISIS {
             value "3";
             description "ISIS:";
           }
           enum Static {
             value "4";
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 13]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
             description "Static:";
           }
           enum RIP {
@@ -778,20 +772,20 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
           description "Enable";
       }
     }
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 14]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
   }
 
   grouping route-target-params {
     description "Grouping to specify rules for route import and export";
     container vpn-targets {
       description
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 14]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
         "Set of route-targets to match for import and export routes
          to/from VRF";
       uses rt-types:vpn-route-targets;
@@ -805,135 +799,135 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
   }
 
   grouping route-tbl-limit-params {
-     description "Grouping for VPN table prefix limit config";
-     leaf routing-table-limit-number {
-        type uint32 {
-          range "1..4294967295";
+    description "Grouping for VPN table prefix limit config";
+    leaf routing-table-limit-number {
+      type uint32 {
+        range "1..4294967295";
+      }
+      description
+        "Specifies the maximum number of routes supported by a
+         VPN instance. ";
+    }
+
+    choice routing-table-limit-action {
+      description ".";
+      case enable-alert-percent {
+        leaf alert-percent-value {
+          type rt-types:percentage;
+          description
+            "Specifies the percentage of the maximum number of
+             routes. When the maximum number of routes that join
+             the VPN instance is up to the value
+             (number*alert-percent)/100, the system prompts
+             alarms. The VPN routes can be still added to the
+             routing table, but after the number of routes
+             reaches number, the subsequent routes are
+             dropped.";
         }
-        description
-          "Specifies the maximum number of routes supported by a
-           VPN instance. ";
-        }
-
-       choice routing-table-limit-action {
-          description ".";
-           case enable-alert-percent {
-             leaf alert-percent-value {
-               type rt-types:percentage;
-               description
-                 "Specifies the percentage of the maximum number of
-                  routes. When the maximum number of routes that join
-                  the VPN instance is up to the value
-                  (number*alert-percent)/100, the system prompts
-                  alarms. The VPN routes can be still added to the
-                  routing table, but after the number of routes
-                  reaches number, the subsequent routes are
-                  dropped.";
-           }
-        }
-        case enable-simple-alert {
-          leaf simple-alert {
-               type boolean;
+      }
+      case enable-simple-alert {
+        leaf simple-alert {
+          type boolean;
+          description
+            "Indicates that when VPN routes exceed number, routes
+             can still be added into the routing table, but the
+             system prompts alarms.
+             However, after the total number of VPN routes and
+             network public routes reaches the unicast route limit
 
 
 
-Jain, et al.             Expires April 18, 2018                [Page 15]
+Jain, et al.             Expires April 21, 2018                [Page 15]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
-               description
-                 "Indicates that when VPN routes exceed number, routes
-                  can still be added into the routing table, but the
-                  system prompts alarms.
-                  However, after the total number of VPN routes and
-                  network public routes reaches the unicast route limit
-                  specified in the License, the subsequent VPN routes
-                  are dropped.";
-             }
-           }
-       }
-   }
+             specified in the License, the subsequent VPN routes
+             are dropped.";
+        }
+      }
+    }
+  }
 
-   grouping routing-tbl-limit {
-      description ".";
-      container routing-table-limit {
-         description
-           "The routing-table limit command sets a limit on the maximum
-            number of routes that the IPv4 or IPv6 address family of a
-            VPN instance can support.
-            By default, there is no limit on the maximum number of
-            routes that the IPv4 or IPv6 address family of a VPN
-            instance can support, but the total number of private
-            network and public network routes on a device cannot
-            exceed the allowed maximum number of unicast routes.";
+  grouping routing-tbl-limit {
+    description ".";
+    container routing-table-limit {
+      description
+        "The routing-table limit command sets a limit on the maximum
+         number of routes that the IPv4 or IPv6 address family of a
+         VPN instance can support.
+         By default, there is no limit on the maximum number of
+         routes that the IPv4 or IPv6 address family of a VPN
+         instance can support, but the total number of private
+         network and public network routes on a device cannot
+         exceed the allowed maximum number of unicast routes.";
 
-            uses route-tbl-limit-params;
-       }
-   }
+         uses route-tbl-limit-params;
+    }
+ }
 
   // Tunnel policy parameters
   grouping tunnel-params {
-     description "Tunnel parameters";
-     container tunnel-params {
-        description "Tunnel config parameters";
-           leaf tunnel-policy {
-              type string;
-              description
-                  "Tunnel policy to steer the VPN traffic into specific tunnel";
-           }
-        }
-     }
+    description "Tunnel parameters";
+    container tunnel-params {
+      description "Tunnel config parameters";
+      leaf tunnel-policy {
+        type string;
+        description
+          "Tunnel policy to steer the VPN traffic into specific tunnel";
+      }
+    }
+  }
 
   // Grouping for the L3vpn specific parameters under VRF
   // (network-instance)
   grouping l3vpn-vrf-params {
-      description "Specify route filtering rules for import/export";
-      container ipv4 {
+    description "Specify route filtering rules for import/export";
+    container ipv4 {
+      description
+        "Specify route filtering rules for import/export";
+      container unicast {
+        description
+          "Specify route filtering rules for import/export";
+        uses route-target-params;
 
 
 
-Jain, et al.             Expires April 18, 2018                [Page 16]
+Jain, et al.             Expires April 21, 2018                [Page 16]
 
 Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
-         description
-           "Specify route filtering rules for import/export";
-         container unicast {
-            description
-              "Specify route filtering rules for import/export";
-            uses route-target-params;
-            uses global-imports;
-            uses global-exports;
-            uses routing-tbl-limit;
-            uses tunnel-params;
-         }
+        uses global-imports;
+        uses global-exports;
+        uses routing-tbl-limit;
+        uses tunnel-params;
       }
-      container ipv6 {
-         description
-           "Ipv6 address family specific rules for import/export";
-         container unicast {
-             description "Ipv6 unicast address family";
-             uses route-target-params;
-             uses global-imports;
-             uses global-exports;
-             uses routing-tbl-limit;
-             uses tunnel-params;
-         }
-     }
+    }
+    container ipv6 {
+      description
+        "Ipv6 address family specific rules for import/export";
+      container unicast {
+        description "Ipv6 unicast address family";
+        uses route-target-params;
+        uses global-imports;
+        uses global-exports;
+        uses routing-tbl-limit;
+        uses tunnel-params;
+      }
+    }
   }
 
   grouping bgp-label-mode {
-       description "MPLS/VPN label allocation mode";
-         leaf label-mode {
-           type bgp-label-mode;
-           description "Label allocation mode";
-         }
+    description "MPLS/VPN label allocation mode";
+    leaf label-mode {
+      type bgp-label-mode;
+      description "Label allocation mode";
+    }
   }
 
   grouping retain-route-targets {
-       description "Grouping for route target accept";
+    description "Grouping for route target accept";
     container retain-route-targets {
       description "Control route target acceptance behavior for ASBRs";
       leaf all {
@@ -946,24 +940,24 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
                      TBD: leafref to IETF routing policy model";
       }
     }
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 17]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
   }
 
   //
   // VRF specific parameters.
   // RD and RTs and route import-export rules are added under
   // network instance container in network instance model, hence
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 17]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
   // per VRF scoped
   augment "/ni:network-instances/ni:network-instance/ni:ni-type" {
-     description
-       "Augment network instance for per VRF L3vpn parameters";
+    description
+      "Augment network instance for per VRF L3vpn parameters";
     case l3vpn {
       container l3vpn {
         description "Configuration of L3VPN specific parameters";
@@ -1002,36 +996,37 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
           "bgp:afi-safi/bgp:l3vpn-ipv6-unicast" {
     description "Retain route targets for ASBR scenario";
     uses retain-route-targets;
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 18]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
     uses vpn-pfx-limit;
   }
 
   // Label allocation mode configuration. Certain AFs only.
   augment "/bgp:bgp/bgp:global/bgp:afi-safis/" +
           "bgp:afi-safi/bgp:ipv4-unicast" {
-     description
-       "Augment BGP global AF mode for label allocation mode
-        configuration";
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 18]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
+
+    description
+      "Augment BGP global AF mode for label allocation mode
+       configuration";
      uses bgp-label-mode ;
      uses routing-tbl-limit;
   }
 
   augment "/bgp:bgp/bgp:global/bgp:afi-safis/" +
           "bgp:afi-safi/bgp:ipv6-unicast" {
-     description
-       "Augment BGP global AF mode for label allocation mode
-        configuration";
+    description
+      "Augment BGP global AF mode for label allocation mode
+       configuration";
      uses bgp-label-mode ;
      uses routing-tbl-limit;
   }
 }
+
 
 
 <CODE ENDS>
@@ -1054,18 +1049,6 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 8.  References
 
-
-
-
-
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 19]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
 8.1.  Normative References
 
    [I-D.ietf-idr-bgp-model]
@@ -1073,6 +1056,15 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
               Bansal, D., Clemm, A., Zhdankin, A., Jethanandani, M., and
               X. Liu, "BGP Model for Service Provider Networks", draft-
               ietf-idr-bgp-model-02 (work in progress), July 2016.
+
+
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 19]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
 
    [I-D.ietf-rtgwg-ni-model]
               Berger, L., Hopps, C., Lindem, A., Bogdanovic, D., and X.
@@ -1114,18 +1106,21 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
               DOI 10.17487/RFC4271, January 2006,
               <https://www.rfc-editor.org/info/rfc4271>.
 
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 20]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
    [RFC4760]  Bates, T., Chandra, R., Katz, D., and Y. Rekhter,
               "Multiprotocol Extensions for BGP-4", RFC 4760,
               DOI 10.17487/RFC4760, January 2007,
               <https://www.rfc-editor.org/info/rfc4760>.
+
+
+
+
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 20]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
+
 
 Authors' Addresses
 
@@ -1165,19 +1160,6 @@ Authors' Addresses
    Email: lizhenbin@huawei.com
 
 
-
-
-
-
-
-
-
-
-Jain, et al.             Expires April 18, 2018                [Page 21]
-
-Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
-
-
    Shunwan Zhuang
    Huawei Technologies
    Huawei Bld., No.156 Beiqing Rd.
@@ -1185,6 +1167,15 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
    China
 
    Email: zhuangshunwan@huawei.com
+
+
+
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 21]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
    Xufeng Liu
@@ -1229,4 +1220,13 @@ Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs      October 2017
 
 
 
-Jain, et al.             Expires April 18, 2018                [Page 22]
+
+
+
+
+
+
+
+
+
+Jain, et al.             Expires April 21, 2018                [Page 22]
