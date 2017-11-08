@@ -1,0 +1,352 @@
+module ietf-bgp-action {
+
+  namespace "urn:ietf:params:xml:ns:yang:ietf-bgp-clear";
+
+  prefix bgp-action;
+
+  import ietf-inet-types {
+     prefix inet ;
+  }
+  import ietf-bgp-types {
+      prefix  bgp-types ;
+      revision-date "2016-06-21";
+  }
+
+  // meta
+  organization
+       "IETF IDR Working Group";
+
+  contact
+        "IDR WG List:  idr@ietf.org
+
+        Editor:  Dhanendra Jain (dhjain@cisco.com)
+        Authors: Dhanendra Jain,
+                 Keyur Patel";
+  description
+       "This model defines BGP clear yang model.
+
+       TBD1: Align the root of the model with BGP container, once
+       base BGP model is moved to protocol continer under core
+       routing container.
+       TBD2: Align the route prefix datatype with bgp-prefix once
+       it is available in base BGP model
+       ";
+
+  revision "2017-11-05" {
+    description
+    "This module describes a YANG model for the BGP protocol
+     common clear actions, counters and statistics";
+    reference "TBD";
+  }
+
+  typedef bgp-clear-direction {
+    type enumeration {
+      enum in {
+        value 1;
+        description "Soft reset inbound direction";
+      }
+      enum out {
+        value 2;
+        description "soft reset outbound direction";
+      }
+      enum both {
+        value 3;
+        description "Soft reset both directions";
+      }
+    }
+    default "in";
+    description "Type definition for neighbor soft clear direction selection";
+  }
+
+  grouping clear-neighbor-common-grp {
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Neighbor address";
+    }
+    leaf all {
+      type empty;
+      description "Clear all neighbor sessions";
+    }
+    leaf as {
+      type inet:as-number;
+      description "Clear sessions pertaining to the neighbors with a given AS";
+    }
+    leaf external  {
+      type empty;
+      description "Clear external (ebgp) neighbors sessions";
+    }
+    description "Common grouping for the BGP neighbor sessions clear actions";
+  } // clear-neighbor-common-grp
+
+  grouping clear-neighbor-grp {
+    container soft {
+      description "Soft clear of neighbor session";
+      leaf afi-safi-name {
+        type identityref {
+          base bgp-types:AFI_SAFI_TYPE;
+        }
+        description "Address family";
+      }
+      leaf direction {
+        type bgp-clear-direction;
+        mandatory "true";
+        description "Clear direction";
+      }
+      uses clear-neighbor-common-grp;
+    }
+    container hard-reset {
+      description "Hard reset of neighbor session";
+      uses clear-neighbor-common-grp;
+      leaf graceful {
+        type boolean;
+        default "true";
+        description "Clear gracefully";
+      }
+    }
+    description "Grouping for BGP neighbor clear actions";
+  } // clear-neighbors
+
+  grouping clear-neighbor-drops-grp {
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Neighbor address";
+    }
+    description "Grouping for neighbor drops counters";
+  }
+
+  grouping clear-process-stats-grp {
+    leaf clear-perf-stats {
+      type empty;
+      description "Clear BGP performance stats information";
+    }
+    description "Grouping for the performance statistics counters";
+  }
+
+  grouping clear-prefix-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf prefix {
+      type inet:ip-prefix;
+      description "The network in prefix/length format";
+    }
+    leaf self-originated {
+      type empty;
+      description "Clear redistributed, network and aggregate routes originated by the
+                   local system";
+    }
+    leaf route-policy {
+      type string;
+      description "Route policy filter for selection of prefixes";
+    }
+    leaf all {
+      type empty;
+      description "Clear all prefixes";
+    }
+    description "Grouping for prefix flap statistics";
+  } // clear prefix
+
+  grouping clear-prefix-dampening-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf prefix {
+      type inet:ip-prefix;
+      description "The network in prefix/length format";
+    }
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Dampened paths from a neighbor";
+    }
+    leaf route-policy {
+      type string;
+      description "Route policy filter for selection of prefixes";
+    }
+    leaf all {
+      type empty;
+      description "Clear dampening state of all prefixes";
+    }
+    description "Grouping for prefix dampening information";
+  } // clear prefix dampening
+
+  grouping clear-prefix-flap-stats-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Prefixes from specified neighbor address";
+    }
+    leaf prefix {
+      type inet:ip-prefix;
+      description "The network in prefix/length format";
+    }
+    leaf route-policy {
+      type string;
+      description "Route policy to filter for clearing flap statistics";
+    }
+    leaf all {
+      type empty;
+      description "Clear all flap statistics for all prefixes";
+    }
+    description "Grouping for prefix flap statistics";
+  } // clear prefix flaps
+
+  grouping clear-neighbor-flap-stats-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Neighbor address";
+    }
+    leaf all {
+      type empty;
+      description "Clear all neighbors flap statistics";
+    }
+    description "Grouping for neighbor flap statistics";
+  } // clear neighbor flaps
+
+  grouping clear-nexthop-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf nexthop-address {
+      type inet:ip-address;
+      description "Next hop address";
+    }
+    leaf flap-stats  {
+      type empty;
+      description "Performance statistics information related to processing";
+    }
+    leaf rib-registrations {
+      /* true-only */
+      type empty;
+      description "Flap the rib registrations for this nexthop";
+    }
+    description "Grouping for BGP nexthop related counters";
+  } // clear nexthops
+
+
+  //
+  // RPC Statements
+  //
+  rpc clear-neighbor {
+    description "Clear bgp neighbor sessions";
+    input {
+      uses "clear-neighbor-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-neighbor-drops {
+    description "Clear bgp neighbor session drops related data";
+    input {
+      uses "clear-neighbor-drops-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+
+  rpc clear-neighbor-flaps {
+    description "Clear bgp neighbor session flaps related data.
+                 The input to RPC is parameters to select the neighbors.
+
+                 The output of RPC is a string retruning success or an
+                 error message.";
+    input {
+      uses "clear-neighbor-flap-stats-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-prefix {
+    description "Clear bgp routes related data";
+    input {
+      uses "clear-prefix-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-prefix-dampening {
+    description "Clear bgp route dampening related data";
+    input {
+      uses "clear-prefix-dampening-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+
+  rpc clear-prefix-flap-stats {
+    description "Clear bgp prefix flap statistics data";
+    input {
+      uses "clear-prefix-flap-stats-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-nexthop {
+    description "Clear bgp nexthop processing related data";
+    input {
+      uses "clear-nexthop-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  // TBD refine this RPC
+  rpc clear-process-stats {
+    description "Clear bgp performance statistics related data";
+    input {
+      uses "clear-process-stats-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+}
