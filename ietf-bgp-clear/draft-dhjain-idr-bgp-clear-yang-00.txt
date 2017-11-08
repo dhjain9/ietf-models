@@ -1,0 +1,840 @@
+
+
+
+
+IDR Working Group                                                D. Jain
+Internet-Draft                                                  K. Patel
+Intended status: Standards Track                                   Cisco
+Expires: May 10, 2018                                  November 06, 2017
+
+
+                    Yang Data Model for BGP actions
+                 draft-dhjain-idr-bgp-clear-yang-00.txt
+
+Abstract
+
+   This document defines a YANG data model for bgp action RPCs.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on May 10, 2018.
+
+Copyright Notice
+
+   Copyright (c) 2017 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents
+   (https://trustee.ietf.org/license-info) in effect on the date of
+   publication of this document.  Please review these documents
+   carefully, as they describe your rights and restrictions with respect
+   to this document.  Code Components extracted from this document must
+   include Simplified BSD License text as described in Section 4.e of
+   the Trust Legal Provisions and are provided without warranty as
+   described in the Simplified BSD License.
+
+   This document may contain material from IETF Documents or IETF
+   Contributions published or made publicly available before November
+   10, 2008.  The person(s) controlling the copyright in some of this
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 1]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+   material may not have granted the IETF Trust the right to allow
+   modifications of such material outside the IETF Standards Process.
+   Without obtaining an adequate license from the person(s) controlling
+   the copyright in such materials, this document may not be modified
+   outside the IETF Standards Process, and derivative works of it may
+   not be created outside the IETF Standards Process, except to format
+   it for publication as an RFC or to translate it into languages other
+   than English.
+
+Table of Contents
+
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+     1.1.  Requirements Language . . . . . . . . . . . . . . . . . .   3
+   2.  Definitions and Acronyms  . . . . . . . . . . . . . . . . . .   3
+   3.  Design of BGP RPC model . . . . . . . . . . . . . . . . . . .   3
+     3.1.  Overview  . . . . . . . . . . . . . . . . . . . . . . . .   3
+     3.2.  Neighbor  . . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.3.  Prefix  . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.4.  Dampening . . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.5.  Flap-statistics . . . . . . . . . . . . . . . . . . . . .   4
+     3.6.  Nexthop . . . . . . . . . . . . . . . . . . . . . . . . .   4
+     3.7.  process-statistics  . . . . . . . . . . . . . . . . . . .   4
+     3.8.  Yang tree . . . . . . . . . . . . . . . . . . . . . . . .   4
+   4.  BGP RPC Yang Module . . . . . . . . . . . . . . . . . . . . .   6
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  14
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
+
+1.  Introduction
+
+   YANG [RFC6020] is a data definition language that was introduced to
+   define the contents of a conceptual data store that allows networked
+   devices to be managed using NETCONF [RFC6241].  YANG is proving
+   relevant beyond its initial confines, as bindings to other interfaces
+   (e.g.  ReST) and encodings other than XML (e.g.  JSON) are being
+   defined.  Furthermore, YANG data models can be used as the basis of
+   implementation for other interfaces, such as CLI and programmatic
+   APIs.
+
+   This document defines a YANG model for clear action RPCs applicable
+   for BGP protocol defined in [RFC4271] [RFC4760].
+
+
+
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 2]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+1.1.  Requirements Language
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this
+   document are to be interpreted as described in RFC 2119 [RFC2119].
+
+2.  Definitions and Acronyms
+
+   AF: Address Family
+
+   AS: Autonomous System
+
+   BGP: Border Gateway Protocol
+
+   NETCONF: Network Configuration Protocol
+
+   ReST: Representational State Transfer, a style of stateless interface
+   and protocol that is generally carried over HTTP
+
+   VRF: Virtual Routing and Forwarding
+
+   YANG: Data definition language for NETCONF
+
+3.  Design of BGP RPC model
+
+3.1.  Overview
+
+   IETF routing model defined in [RFC8022] provies a container named
+   control-plane-protocols to model the routing procotols in the context
+   of a network instance.  Protocol type leaf and the name leaf in the
+   control-plane-protocol list entry key uniquely identify a BGP
+   protocol instance.  The BGP RPC model will be available in the
+   context of a BGP instance via augmentation to the BGP top container.
+   The BGP RPC model is supposed to provide bgp actions (equivalent to
+   bgp clear CLIs) for various entities within a BGP protocol instance.
+   Supported RPC operations are described in following sections.  For
+   each RPC, the input argument provide few filters to control the
+   granularity of action.  Note that the protocol instance name and VRF
+   will be implicit filters due to top container being in the context of
+   network instance and a particular instance of BGP.  The other filters
+   such as address-family, neighbor-address and others are provided as
+   leafs as applicable.  The result of the action is a string leaf
+   modeled as output parameter of RPC.
+
+   TBD1: Add augment statements to place RPCs under BGP model root, once
+   base BGP model is aligned with itef routing yang model [RFC8022].
+
+
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 3]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+   TBD2: Align prefix datatype to bgp-prefix datatype when defined in
+   bgp types respository.
+
+   TBD3: Add leafrefs to policy namespace for route-policy leafs.
+
+3.2.  Neighbor
+
+   This refers to the RPC actions correponding to clearing the BGP
+   neighbor sessions.  Both hard reset and soft reset are applicable
+   here with few filter parameters to control the granularity of the RPC
+   action.
+
+3.3.  Prefix
+
+   This refers to the RPC actions to clear the BGP routes.
+
+3.4.  Dampening
+
+   This refers to the RPC actions to clear the Dampening info of routes.
+
+3.5.  Flap-statistics
+
+   This refers to the RPC actions to clear BGP prefix flaps related
+   info.
+
+3.6.  Nexthop
+
+   RPC actions corresponding to BGP nexthop counters.
+
+3.7.  process-statistics
+
+   RPC actions corresponding to BGP process statistics.
+
+3.8.  Yang tree
+
+
+   module: ietf-bgp-clear
+   rpcs:
+      +---x clear-neighbor
+      |  +---w input
+      |  |  +---w soft
+      |  |  |  +---w afi-safi-name?      identityref
+      |  |  |  +---w direction           bgp-clear-direction
+      |  |  |  +---w neighbor-address?   inet:ip-address
+      |  |  |  +---w all?                empty
+      |  |  |  +---w as?                 inet:as-number
+      |  |  |  +---w external?           empty
+      |  |  +---w hard-reset
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 4]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+      |  |     +---w neighbor-address?   inet:ip-address
+      |  |     +---w all?                empty
+      |  |     +---w as?                 inet:as-number
+      |  |     +---w external?           empty
+      |  |     +---w graceful?           boolean
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-neighbor-drops
+      |  +---w input
+      |  |  +---w neighbor-address?   inet:ip-address
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-neighbor-flaps
+      |  +---w input
+      |  |  +---w afi-safi-name?      identityref
+      |  |  +---w neighbor-address?   inet:ip-address
+      |  |  +---w all?                empty
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-prefix
+      |  +---w input
+      |  |  +---w afi-safi-name?     identityref
+      |  |  +---w prefix?            inet:ip-prefix
+      |  |  +---w self-originated?   empty
+      |  |  +---w route-policy?      string
+      |  |  +---w all?               empty
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-prefix-dampening
+      |  +---w input
+      |  |  +---w afi-safi-name?      identityref
+      |  |  +---w prefix?             inet:ip-prefix
+      |  |  +---w neighbor-address?   inet:ip-address
+      |  |  +---w route-policy?       string
+      |  |  +---w all?                empty
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-prefix-flap-stats
+      |  +---w input
+      |  |  +---w afi-safi-name?      identityref
+      |  |  +---w neighbor-address?   inet:ip-address
+      |  |  +---w prefix?             inet:ip-prefix
+      |  |  +---w route-policy?       string
+      |  |  +---w all?                empty
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-nexthop
+      |  +---w input
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 5]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+      |  |  +---w afi-safi-name?       identityref
+      |  |  +---w nexthop-address?     inet:ip-address
+      |  |  +---w flap-stats?          empty
+      |  |  +---w rib-registrations?   empty
+      |  +--ro output
+      |     +--ro result?   string
+      +---x clear-process-stats
+         +---w input
+         |  +---w clear-perf-stats?   empty
+         +--ro output
+            +--ro result?   string
+
+
+
+4.  BGP RPC Yang Module
+
+
+<CODE BEGINS> file "ietf-bgp-action@2017-11-06.yang"
+module ietf-bgp-action {
+
+  namespace "urn:ietf:params:xml:ns:yang:ietf-bgp-clear";
+
+  prefix bgp-action;
+
+  import ietf-inet-types {
+     prefix inet ;
+  }
+  import ietf-bgp-types {
+      prefix  bgp-types ;
+      revision-date "2016-06-21";
+  }
+
+  // meta
+  organization
+       "IETF IDR Working Group";
+
+  contact
+        "IDR WG List:  idr@ietf.org
+
+        Editor:  Dhanendra Jain (dhjain@cisco.com)
+        Authors: Dhanendra Jain,
+                 Keyur Patel";
+  description
+       "This model defines BGP clear yang model.
+
+       TBD1: Align the root of the model with BGP container, once
+       base BGP model is moved to protocol continer under core
+       routing container.
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 6]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+       TBD2: Align the route prefix datatype with bgp-prefix once
+       it is available in base BGP model
+       ";
+
+  revision "2017-11-05" {
+    description
+    "This module describes a YANG model for the BGP protocol
+     common clear actions, counters and statistics";
+    reference "TBD";
+  }
+
+  typedef bgp-clear-direction {
+    type enumeration {
+      enum in {
+        value 1;
+        description "Soft reset inbound direction";
+      }
+      enum out {
+        value 2;
+        description "soft reset outbound direction";
+      }
+      enum both {
+        value 3;
+        description "Soft reset both directions";
+      }
+    }
+    default "in";
+    description "Type definition for neighbor soft clear direction selection";
+  }
+
+  grouping clear-neighbor-common-grp {
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Neighbor address";
+    }
+    leaf all {
+      type empty;
+      description "Clear all neighbor sessions";
+    }
+    leaf as {
+      type inet:as-number;
+      description "Clear sessions pertaining to the neighbors with a given AS";
+    }
+    leaf external  {
+      type empty;
+      description "Clear external (ebgp) neighbors sessions";
+    }
+    description "Common grouping for the BGP neighbor sessions clear actions";
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 7]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+  } // clear-neighbor-common-grp
+
+  grouping clear-neighbor-grp {
+    container soft {
+      description "Soft clear of neighbor session";
+      leaf afi-safi-name {
+        type identityref {
+          base bgp-types:AFI_SAFI_TYPE;
+        }
+        description "Address family";
+      }
+      leaf direction {
+        type bgp-clear-direction;
+        mandatory "true";
+        description "Clear direction";
+      }
+      uses clear-neighbor-common-grp;
+    }
+    container hard-reset {
+      description "Hard reset of neighbor session";
+      uses clear-neighbor-common-grp;
+      leaf graceful {
+        type boolean;
+        default "true";
+        description "Clear gracefully";
+      }
+    }
+    description "Grouping for BGP neighbor clear actions";
+  } // clear-neighbors
+
+  grouping clear-neighbor-drops-grp {
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Neighbor address";
+    }
+    description "Grouping for neighbor drops counters";
+  }
+
+  grouping clear-process-stats-grp {
+    leaf clear-perf-stats {
+      type empty;
+      description "Clear BGP performance stats information";
+    }
+    description "Grouping for the performance statistics counters";
+  }
+
+  grouping clear-prefix-grp {
+    leaf afi-safi-name {
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 8]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf prefix {
+      type inet:ip-prefix;
+      description "The network in prefix/length format";
+    }
+    leaf self-originated {
+      type empty;
+      description "Clear redistributed, network and aggregate routes originated by the
+                   local system";
+    }
+    leaf route-policy {
+      type string;
+      description "Route policy filter for selection of prefixes";
+    }
+    leaf all {
+      type empty;
+      description "Clear all prefixes";
+    }
+    description "Grouping for prefix flap statistics";
+  } // clear prefix
+
+  grouping clear-prefix-dampening-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf prefix {
+      type inet:ip-prefix;
+      description "The network in prefix/length format";
+    }
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Dampened paths from a neighbor";
+    }
+    leaf route-policy {
+      type string;
+      description "Route policy filter for selection of prefixes";
+    }
+    leaf all {
+      type empty;
+      description "Clear dampening state of all prefixes";
+    }
+
+
+
+Jain & Patel              Expires May 10, 2018                  [Page 9]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+    description "Grouping for prefix dampening information";
+  } // clear prefix dampening
+
+  grouping clear-prefix-flap-stats-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Prefixes from specified neighbor address";
+    }
+    leaf prefix {
+      type inet:ip-prefix;
+      description "The network in prefix/length format";
+    }
+    leaf route-policy {
+      type string;
+      description "Route policy to filter for clearing flap statistics";
+    }
+    leaf all {
+      type empty;
+      description "Clear all flap statistics for all prefixes";
+    }
+    description "Grouping for prefix flap statistics";
+  } // clear prefix flaps
+
+  grouping clear-neighbor-flap-stats-grp {
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf neighbor-address {
+      type inet:ip-address;
+      description "Neighbor address";
+    }
+    leaf all {
+      type empty;
+      description "Clear all neighbors flap statistics";
+    }
+    description "Grouping for neighbor flap statistics";
+  } // clear neighbor flaps
+
+  grouping clear-nexthop-grp {
+
+
+
+Jain & Patel              Expires May 10, 2018                 [Page 10]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+    leaf afi-safi-name {
+      type identityref {
+        base bgp-types:AFI_SAFI_TYPE;
+      }
+      description "Address family";
+    }
+    leaf nexthop-address {
+      type inet:ip-address;
+      description "Next hop address";
+    }
+    leaf flap-stats  {
+      type empty;
+      description "Performance statistics information related to processing";
+    }
+    leaf rib-registrations {
+      /* true-only */
+      type empty;
+      description "Flap the rib registrations for this nexthop";
+    }
+    description "Grouping for BGP nexthop related counters";
+  } // clear nexthops
+
+
+  //
+  // RPC Statements
+  //
+  rpc clear-neighbor {
+    description "Clear bgp neighbor sessions";
+    input {
+      uses "clear-neighbor-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-neighbor-drops {
+    description "Clear bgp neighbor session drops related data";
+    input {
+      uses "clear-neighbor-drops-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+
+
+
+Jain & Patel              Expires May 10, 2018                 [Page 11]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+    }
+  }
+
+  rpc clear-neighbor-flaps {
+    description "Clear bgp neighbor session flaps related data.
+                 The input to RPC is parameters to select the neighbors.
+
+                 The output of RPC is a string retruning success or an
+                 error message.";
+    input {
+      uses "clear-neighbor-flap-stats-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-prefix {
+    description "Clear bgp routes related data";
+    input {
+      uses "clear-prefix-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-prefix-dampening {
+    description "Clear bgp route dampening related data";
+    input {
+      uses "clear-prefix-dampening-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+
+  rpc clear-prefix-flap-stats {
+    description "Clear bgp prefix flap statistics data";
+    input {
+      uses "clear-prefix-flap-stats-grp";
+
+
+
+Jain & Patel              Expires May 10, 2018                 [Page 12]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  rpc clear-nexthop {
+    description "Clear bgp nexthop processing related data";
+    input {
+      uses "clear-nexthop-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+  // TBD refine this RPC
+  rpc clear-process-stats {
+    description "Clear bgp performance statistics related data";
+    input {
+      uses "clear-process-stats-grp";
+    }
+    output {
+      leaf result {
+        type string;
+        description "Result of RPC operation";
+      }
+    }
+  }
+}
+
+
+
+<CODE ENDS>
+
+5.  IANA Considerations
+
+6.  Security Considerations
+
+   The transport protocol used for sending the BGP RPC data MUST support
+   authentication and SHOULD support encryption.  The data-model by
+   itself does not create any security implications.
+
+
+
+
+
+Jain & Patel              Expires May 10, 2018                 [Page 13]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+   This draft does not change any underlying security aspects of Yang
+   based data management via Netconf or Restconf protocol.
+
+7.  Acknowledgements
+
+   The authors would like to thank TBD for their detail reviews and
+   comments.
+
+8.  References
+
+8.1.  Normative References
+
+   [I-D.ietf-idr-bgp-model]
+              Shaikh, A., Shakir, R., Patel, K., Hares, S., D'Souza, K.,
+              Bansal, D., Clemm, A., Zhdankin, A., Jethanandani, M., and
+              X. Liu, "BGP Model for Service Provider Networks", draft-
+              ietf-idr-bgp-model-02 (work in progress), July 2016.
+
+   [I-D.ietf-rtgwg-ni-model]
+              Berger, L., Hopps, C., Lindem, A., Bogdanovic, D., and X.
+              Liu, "YANG Network Instances", draft-ietf-rtgwg-ni-
+              model-04 (work in progress), September 2017.
+
+   [I-D.ietf-rtgwg-routing-types]
+              Liu, X., Qu, Y., Lindem, A., Hopps, C., and L. Berger,
+              "Routing Area Common YANG Data Types", draft-ietf-rtgwg-
+              routing-types-17 (work in progress), October 2017.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+   [RFC6020]  Bjorklund, M., Ed., "YANG - A Data Modeling Language for
+              the Network Configuration Protocol (NETCONF)", RFC 6020,
+              DOI 10.17487/RFC6020, October 2010,
+              <https://www.rfc-editor.org/info/rfc6020>.
+
+   [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
+              and A. Bierman, Ed., "Network Configuration Protocol
+              (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
+              <https://www.rfc-editor.org/info/rfc6241>.
+
+   [RFC8022]  Lhotka, L. and A. Lindem, "A YANG Data Model for Routing
+              Management", RFC 8022, DOI 10.17487/RFC8022, November
+              2016, <https://www.rfc-editor.org/info/rfc8022>.
+
+
+
+
+
+Jain & Patel              Expires May 10, 2018                 [Page 14]
+
+Internet-Draft    Yang Data Model for BGP/MPLS L3 VPNs     November 2017
+
+
+8.2.  Informative References
+
+   [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
+              Border Gateway Protocol 4 (BGP-4)", RFC 4271,
+              DOI 10.17487/RFC4271, January 2006,
+              <https://www.rfc-editor.org/info/rfc4271>.
+
+   [RFC4760]  Bates, T., Chandra, R., Katz, D., and Y. Rekhter,
+              "Multiprotocol Extensions for BGP-4", RFC 4760,
+              DOI 10.17487/RFC4760, January 2007,
+              <https://www.rfc-editor.org/info/rfc4760>.
+
+Authors' Addresses
+
+   Dhanendra Jain
+   Cisco
+   170 W. Tasman Drive
+   San Jose, CA  95134
+   USA
+
+   Email: dhjain@cisco.com
+
+
+   Keyur Patel
+   Cisco
+   170 W. Tasman Drive
+   San Jose, CA  95134
+   USA
+
+   Email: keyur@arrcus.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Jain & Patel              Expires May 10, 2018                 [Page 15]
