@@ -1,0 +1,83 @@
+module: ietf-bgp-action
+
+  rpcs:
+    +---x clear-neighbor
+    |  +---w input
+    |  |  +---w method        bgp-clear-type
+    |  |  +---w soft
+    |  |  |  +---w afi-safi-name?      identityref
+    |  |  |  +---w direction           bgp-clear-direction
+    |  |  |  +---w neighbor-address?   inet:ip-address
+    |  |  |  +---w all?                empty
+    |  |  |  +---w as?                 inet:as-number
+    |  |  |  +---w external?           empty
+    |  |  |  +---w neighbor-group?     string
+    |  |  +---w hard-reset
+    |  |     +---w neighbor-address?   inet:ip-address
+    |  |     +---w all?                empty
+    |  |     +---w as?                 inet:as-number
+    |  |     +---w external?           empty
+    |  |     +---w neighbor-group?     string
+    |  |     +---w graceful?           boolean
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-neighbor-drops
+    |  +---w input
+    |  |  +---w neighbor-address?   inet:ip-address
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-neighbor-flaps
+    |  +---w input
+    |  |  +---w afi-safi-name       identityref
+    |  |  +---w neighbor-address?   inet:ip-address
+    |  |  +---w all?                empty
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-prefix
+    |  +---w input
+    |  |  +---w afi-safi-name      identityref
+    |  |  +---w prefix?            inet:ip-prefix
+    |  |  +---w self-originated?   empty
+    |  |  +---w route-policy?      string
+    |  |  +---w all?               empty
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-prefix-dampening
+    |  +---w input
+    |  |  +---w afi-safi-name       identityref
+    |  |  +---w prefix?             inet:ip-prefix
+    |  |  +---w neighbor-address?   inet:ip-address
+    |  |  +---w route-policy?       string
+    |  |  +---w all?                empty
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-prefix-flap-stats
+    |  +---w input
+    |  |  +---w afi-safi-name       identityref
+    |  |  +---w neighbor-address?   inet:ip-address
+    |  |  +---w prefix?             inet:ip-prefix
+    |  |  +---w route-policy?       string
+    |  |  +---w all?                empty
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-nexthop
+    |  +---w input
+    |  |  +---w afi-safi-name?       identityref
+    |  |  +---w nexthop-address?     inet:ip-address
+    |  |  +---w flap-stats?          empty
+    |  |  +---w rib-registrations?   empty
+    |  +--ro output
+    |     +--ro result           enumeration
+    |     +--ro error-message?   string
+    +---x clear-process-stats
+       +---w input
+       |  +---w clear-perf-stats?   empty
+       +--ro output
+          +--ro result           enumeration
+          +--ro error-message?   string
