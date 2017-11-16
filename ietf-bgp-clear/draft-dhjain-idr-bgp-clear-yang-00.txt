@@ -5,10 +5,10 @@
 IDR Working Group                                                D. Jain
 Internet-Draft                                                     Cisco
 Intended status: Standards Track                                K. Patel
-Expires: May 16, 2018                                             Arrcus
+Expires: May 19, 2018                                             Arrcus
                                                                   X. Liu
                                                                    Jabil
-                                                       November 12, 2017
+                                                       November 15, 2017
 
 
                     Yang Data Model for BGP actions
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on May 16, 2018.
+   This Internet-Draft will expire on May 19, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 1]
+Jain, et al.              Expires May 19, 2018                  [Page 1]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
@@ -87,11 +87,11 @@ Table of Contents
    4.  BGP RPC Yang Module . . . . . . . . . . . . . . . . . . . . .   6
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  14
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  14
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  14
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  15
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
+   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  15
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  15
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  16
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  16
 
 1.  Introduction
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 2]
+Jain, et al.              Expires May 19, 2018                  [Page 2]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
@@ -165,7 +165,7 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 3]
+Jain, et al.              Expires May 19, 2018                  [Page 3]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
@@ -214,19 +214,21 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       |  |  |  +---w all?                empty
       |  |  |  +---w as?                 inet:as-number
       |  |  |  +---w external?           empty
+      |  |  |  +---w neighbor-group?     string
       |  |  +---w hard-reset
       |  |     +---w neighbor-address?   inet:ip-address
       |  |     +---w all?                empty
-      |  |     +---w as?                 inet:as-number
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 4]
+Jain, et al.              Expires May 19, 2018                  [Page 4]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
 
+      |  |     +---w as?                 inet:as-number
       |  |     +---w external?           empty
+      |  |     +---w neighbor-group?     string
       |  |     +---w graceful?           boolean
       |  +--ro output
       |     +--ro result           enumeration
@@ -272,16 +274,16 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       |  |  +---w prefix?             inet:ip-prefix
       |  |  +---w route-policy?       string
       |  |  +---w all?                empty
-      |  +--ro output
-      |     +--ro result           enumeration
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 5]
+Jain, et al.              Expires May 19, 2018                  [Page 5]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
 
+      |  +--ro output
+      |     +--ro result           enumeration
       |     +--ro error-message?   string
       +---x clear-nexthop
       |  +---w input
@@ -304,7 +306,7 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 4.  BGP RPC Yang Module
 
 
-<CODE BEGINS> file "ietf-bgp-action@2017-11-12.yang"
+<CODE BEGINS> file "ietf-bgp-action@2017-11-15.yang"
 module ietf-bgp-action {
 
   namespace "urn:ietf:params:xml:ns:yang:ietf-bgp-action";
@@ -328,16 +330,16 @@ module ietf-bgp-action {
 
         Editor:  Dhanendra Jain (dhjain@cisco.com)
         Authors: Dhanendra Jain,
-                 Keyur Patel";
-  description
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 6]
+Jain, et al.              Expires May 19, 2018                  [Page 6]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
 
+                 Keyur Patel";
+  description
        "This yang model defines BGP clear actions.
 
        TBD1: Align the root of the model with BGP container, once
@@ -348,7 +350,7 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
        it is available in base BGP model
        ";
 
-  revision "2017-11-12" {
+  revision "2017-11-15" {
     description
     "This module describes a YANG model for the BGP protocol
      common clear actions, counters and statistics";
@@ -384,16 +386,16 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
         description "Soft reset both directions";
       }
     }
-    default "in";
-    description "Type definition for neighbor soft clear direction selection";
 
 
 
-Jain, et al.              Expires May 16, 2018                  [Page 7]
+Jain, et al.              Expires May 19, 2018                  [Page 7]
 
 Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
 
+    default "in";
+    description "Type definition for neighbor soft clear direction selection";
   }
 
   grouping bgp-clear-result {
@@ -427,7 +429,8 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
     }
     leaf all {
       type empty;
-      description "Clear all neighbor sessions";
+      description "Clear all neighbor sessions. If supplied, this option
+                   takes preference over individual options";
     }
     leaf as {
       type inet:as-number;
@@ -437,25 +440,31 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       type empty;
       description "Clear external (ebgp) neighbor sessions";
     }
+    leaf neighbor-group {
+       type string;
+
+
+
+Jain, et al.              Expires May 19, 2018                  [Page 8]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
+       description "Clear neighbors pertaining to a neighbor-group";
+    }
     description "Common grouping for the BGP neighbor sessions clear actions";
   } // clear-neighbor-common-grp
 
   grouping clear-neighbor-grp {
     leaf method {
-
-
-
-Jain, et al.              Expires May 16, 2018                  [Page 8]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
-
       type bgp-clear-type;
       mandatory "true";
       description "Clear method";
     }
     container soft {
-      when "../method='soft'";
+      when "../method='soft'" {
+        description "Following options are applicable only for soft clear method";
+      }
       description "Soft clear of neighbor session";
       leaf afi-safi-name {
         type identityref {
@@ -471,7 +480,9 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       uses clear-neighbor-common-grp;
     }
     container hard-reset {
-      when "../method='hard-reset'";
+      when "../method='hard-reset'" {
+        description "Following options are applicable for hard-reset method";
+      }
       description "Hard reset of neighbor session";
       uses clear-neighbor-common-grp;
       leaf graceful {
@@ -487,6 +498,14 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
     leaf neighbor-address {
       type inet:ip-address;
       description "Neighbor address";
+
+
+
+Jain, et al.              Expires May 19, 2018                  [Page 9]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
     }
     description "Grouping for neighbor drops counters";
   }
@@ -498,14 +517,6 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
     }
     description "Grouping for the performance statistics counters";
   }
-
-
-
-Jain, et al.              Expires May 16, 2018                  [Page 9]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
-
   grouping clear-prefix-grp {
     leaf afi-safi-name {
       type identityref {
@@ -532,7 +543,8 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
     }
     leaf all {
       type empty;
-      description "Clear all prefixes";
+      description "Clear all prefixes. If supplied, this option takes preference
+                   over other options";
     }
     description "Grouping for prefix flap statistics";
   } // clear prefix
@@ -542,6 +554,14 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       type identityref {
         base bgp-types:AFI_SAFI_TYPE;
       }
+
+
+
+Jain, et al.              Expires May 19, 2018                 [Page 10]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
       mandatory "true";
       description "Address family";
     }
@@ -554,20 +574,13 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       description "Dampened paths from a neighbor";
     }
     leaf route-policy {
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 10]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
-
       type string;
       description "Route policy filter for selection of prefixes";
     }
     leaf all {
       type empty;
-      description "Clear dampening state of all prefixes";
+      description "Clear dampening state of all prefixes. If supplied, this option
+                   takes preference over other options";
     }
     description "Grouping for prefix dampening information";
   } // clear prefix dampening
@@ -597,6 +610,14 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       type empty;
       description "Clear all flap statistics for all prefixes. Note that
                    due to afi-safi being mandatory leaf, this will clear
+
+
+
+Jain, et al.              Expires May 19, 2018                 [Page 11]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
                    flap statistics for all prefixes for a given BGP SAFI";
     }
     description "Grouping for prefix flap statistics";
@@ -610,14 +631,6 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
       mandatory "true";
       description "Address family";
     }
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 11]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
-
     leaf neighbor-address {
       type inet:ip-address;
       description "Neighbor address";
@@ -653,6 +666,14 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
   } // clear nexthops
 
 
+
+
+
+Jain, et al.              Expires May 19, 2018                 [Page 12]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
   //
   // RPC Statements
   //
@@ -666,14 +687,6 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
     }
   }
   rpc clear-neighbor-drops {
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 12]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
-
     description "Clear bgp neighbor session drops related data";
     input {
       uses "clear-neighbor-drops-grp";
@@ -709,6 +722,14 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
     output {
       uses "bgp-clear-result";
     }
+
+
+
+Jain, et al.              Expires May 19, 2018                 [Page 13]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
   }
 
   rpc clear-prefix-flap-stats {
@@ -722,14 +743,6 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
   }
   rpc clear-nexthop {
     description "Clear bgp nexthop processing related data";
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 13]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
-
     input {
       uses "clear-nexthop-grp";
     }
@@ -764,6 +777,15 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
    This draft does not change any underlying security aspects of Yang
    based data management via Netconf or Restconf protocol.
 
+
+
+
+
+Jain, et al.              Expires May 19, 2018                 [Page 14]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
 7.  Acknowledgements
 
    The authors would like to thank TBD for their detail reviews and
@@ -778,13 +800,6 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
               Bansal, D., Clemm, A., Zhdankin, A., Jethanandani, M., and
               X. Liu, "BGP Model for Service Provider Networks", draft-
               ietf-idr-bgp-model-02 (work in progress), July 2016.
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 14]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
 
    [I-D.ietf-rtgwg-ni-model]
               Berger, L., Hopps, C., Lindem, A., Bogdanovic, D., and X.
@@ -815,6 +830,18 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
               Management", RFC 8022, DOI 10.17487/RFC8022, November
               2016, <https://www.rfc-editor.org/info/rfc8022>.
 
+
+
+
+
+
+
+
+Jain, et al.              Expires May 19, 2018                 [Page 15]
+
+Internet-Draft        Yang Data Model for BGP RPCs         November 2017
+
+
 8.2.  Informative References
 
    [RFC4271]  Rekhter, Y., Ed., Li, T., Ed., and S. Hares, Ed., "A
@@ -828,19 +855,6 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
               <https://www.rfc-editor.org/info/rfc4760>.
 
 Authors' Addresses
-
-
-
-
-
-
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 15]
-
-Internet-Draft        Yang Data Model for BGP RPCs         November 2017
-
 
    Dhanendra Jain
    Cisco
@@ -879,18 +893,4 @@ Internet-Draft        Yang Data Model for BGP RPCs         November 2017
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Jain, et al.              Expires May 16, 2018                 [Page 16]
+Jain, et al.              Expires May 19, 2018                 [Page 16]
